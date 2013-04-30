@@ -28,6 +28,7 @@ Game = {
     Crafty.background('rgb(249, 223, 125)');
     Crafty.e('PlayerCharacter').at(5, 5);
 
+    max_villages = 5;
  
     // Place a tree at every edge square on our grid of 16x16 tiles
     for (var x = 0; x < Game.map_grid.width; x++) {
@@ -40,6 +41,10 @@ Game = {
         } else if (Math.random() < 0.06) {
           // Place a bush entity at the current tile
           Crafty.e('Bush').at(x, y);
+        } else if (Math.random() < 0.02) {
+            if (Crafty('Village').length < max_villages) {
+                Crafty.e('Village').at(x, y);
+            }
         }
       }
     }
