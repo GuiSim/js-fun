@@ -25,28 +25,11 @@ Game = {
   start: function() {
     // Start crafty and set a background color so that we can see it's working
     Crafty.init(Game.width(), Game.height());
-    Crafty.background('rgb(249, 223, 125)');
-    Crafty.e('PlayerCharacter').at(5, 5);
-
-    max_villages = 5;
+    Crafty.background('rgb(87, 109, 20)');
  
-    // Place a tree at every edge square on our grid of 16x16 tiles
-    for (var x = 0; x < Game.map_grid.width; x++) {
-      for (var y = 0; y < Game.map_grid.height; y++) {
-        var at_edge = x == 0 || x == Game.map_grid.width - 1 || y == 0 || y == Game.map_grid.height - 1;
- 
-        if (at_edge) {
-          // Place a tree entity at the current tile
-          Crafty.e('Tree').at(x, y);
-        } else if (Math.random() < 0.06) {
-          // Place a bush entity at the current tile
-          Crafty.e('Bush').at(x, y);
-        } else if (Math.random() < 0.02) {
-            if (Crafty('Village').length < max_villages) {
-                Crafty.e('Village').at(x, y);
-            }
-        }
-      }
-    }
+    // Simply start the "Loading" scene to get things going
+    Crafty.scene('Loading');
   }
 }
+ 
+$text_css = { 'font-size': '24px', 'font-family': 'Arial', 'color': 'white', 'text-align': 'center' }
