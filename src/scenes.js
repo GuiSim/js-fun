@@ -2,10 +2,10 @@
 // -------------
 // Runs the core gameplay loop
 Crafty.scene('Test', function () {
-
 	this.robots = []; // All the robots in the scene
 
 	this.spawnRobot = function (position) {
+        // TODO, make the robot a component.
 		this.robots.push(Crafty.e('2D, Canvas, Color')
 			.attr({
 				w : 10,
@@ -53,19 +53,6 @@ Crafty.scene('Menu', function () {
 		console.log('click!');
 		Crafty.scene('Test');
 	});
-
-	// rect = Crafty.e('2D, Canvas, Color, Mouse')
-		// .attr({
-			// w : 60,
-			// h : 20,
-			// x : Game.width() / 2 - 60 / 2,
-			// y : Game.height() / 2 - 20 / 2,
-		// })
-		// .color('rgb(20, 125, 40)')
-		// .bind('Click', function () {
-			// console.log('click!');
-			// Crafty.scene('Test');
-		// })
 });
 
 // Loading scene
