@@ -1,12 +1,12 @@
 Game = {
 	width : function () {
-		return 400;
+		return 1000;
 	},
 
 	// The total height of the game screen. Since our grid takes up the entire screen
 	//  this is just the height of a tile times the height of the grid
 	height : function () {
-		return 300;
+		return 1000;
 	},
 	// Initialize and start our game
 	start : function () {

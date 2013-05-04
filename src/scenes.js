@@ -5,22 +5,7 @@ Crafty.scene('Test', function () {
 
 	this.robots = []; // All the robots in the scene
 
-	Crafty.e('2D, Canvas, Color, Mouse')
-	.attr({
-		w : Game.width(),
-		h : Game.height(),
-		x : 0,
-		y : 0
-	})
-	.bind('Click', function (data) {
-		Crafty.trigger('SpawnRobot', {
-			x : data.realX,
-			y : data.realY
-		});
-	})
-	.color('white')
-
-	this.bind('SpawnRobot', function (position) {
+	this.spawnRobot = function (position) {
 		this.robots.push(Crafty.e('2D, Canvas, Color')
 			.attr({
 				w : 10,
@@ -53,31 +38,34 @@ Crafty.scene('Test', function () {
 				this.x += xMovement;
 				this.y += yMovement;
 			}))
-	});
+	}
+
+	Crafty.e('SpawnableBackground');
+
+	this.bind('SpawnRobot', this.spawnRobot);
 });
 
 Crafty.scene('Menu', function () {
-	// testMenuLink = Crafty.e('2D, DOM, Text, Mouse')
-	// .text('Test mode')
-	// .attr({x:0, y:0, w:200, h:10})
-	// .css($text_css)
-	// .bind('Click', function () {
-	// console.log('click!');
-	// Crafty.scene('Test');
-	// });
 
-	rect = Crafty.e('2D, Canvas, Color, Mouse')
-		.attr({
-			w : 60,
-			h : 20,
-			x : Game.width() / 2 - 60 / 2,
-			y : Game.height() / 2 - 20 / 2,
-		})
-		.color('rgb(20, 125, 40)')
-		.bind('Click', function () {
-			console.log('click!');
-			Crafty.scene('Test');
-		})
+	Crafty.e('Button')
+	.at(100, 100)
+	.click(function () {
+		console.log('click!');
+		Crafty.scene('Test');
+	});
+
+	// rect = Crafty.e('2D, Canvas, Color, Mouse')
+		// .attr({
+			// w : 60,
+			// h : 20,
+			// x : Game.width() / 2 - 60 / 2,
+			// y : Game.height() / 2 - 20 / 2,
+		// })
+		// .color('rgb(20, 125, 40)')
+		// .bind('Click', function () {
+			// console.log('click!');
+			// Crafty.scene('Test');
+		// })
 });
 
 // Loading scene
