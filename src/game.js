@@ -16,6 +16,10 @@ Game = {
 
         // Simply start the "Loading" scene to get things going
         Crafty.scene('Loading');
+    },
+    
+    substract : function(a, b) {
+        return a-b;
     }
 }
 
