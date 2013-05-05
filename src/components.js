@@ -11,32 +11,39 @@ Crafty.c('Robot', {
     },
 
     reactToRobots : function () {
-        // this.x += Crafty.math.randomNumber(-1, 1);
-        // this.y += Crafty.math.randomNumber(-1, 1);
-        // return; // TODO - Remove this.
         var xMovement = 0;
         var yMovement = 0;
         for (var i = 0; i < Game.robots.length; i++) {
-            var robot = Game.robots[i];
-            var xDifference = Game.substract(robot.x, this.x);
-            var yDifference = Game.substract(robot.y, this.y);
-            //var xDifference = robot.x - this.x;
-            //var yDifference = robot.y - this.y;
-            if (this.isCloseEnoughToInteract(xDifference, yDifference)) {
-                var robotInteractionResult = this.computeRobotInteraction(robot);
-                xMovement += robotInteractionResult.x;
-                yMovement += robotInteractionResult.y;
-            }
+            var result = this.handleRobot(Game.robots[i]);
+            xMovement += result.x;
+            yMovement += result.y;
         }
 
         this.x += xMovement;
         this.y += yMovement;
     },
 
+    handleRobot : function (robot) {
+        var xMovement = 0;
+        var yMovement = 0;
+        var xDifference = robot.x - this.x;
+        var yDifference = robot.y - this.y;
+        if (this.isCloseEnoughToInteract(xDifference, yDifference)) {
+            var robotInteractionResult = this.computeRobotInteraction(robot);
+            xMovement += robotInteractionResult.x;
+            yMovement += robotInteractionResult.y;
+        }
+
+        return {
+            x : xMovement,
+            y : yMovement
+        };
+    },
+
     isCloseEnoughToInteract : function (xDifference, yDifference) {
         return (Math.abs(xDifference) < this.influenceRange) && (Math.abs(yDifference) < this.influenceRange);
     },
-    
+
     computeRobotInteraction : function (robot) {
         var xMovement = 0;
         var yMovement = 0;

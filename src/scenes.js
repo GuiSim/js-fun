@@ -4,12 +4,14 @@
 Crafty.scene('Test', function () {
     Game.robots = []; // All the robots in the scene
     Game.numberOfRobotInteraction = 0;
+    Game.timestampOfLastFrame = 0;
 
     this.spawnRobot = function (position) {
         var robot = Crafty.e('Robot')
             .center(position.x, position.y);
         Game.robots.push(robot);
     }
+    
     Game.interactionCount = Crafty.e('2D, Text, DOM').attr({
             x : 0,
             y : 0,
@@ -22,10 +24,26 @@ Crafty.scene('Test', function () {
             w : 150,
             h : 20
         }).text("Loading..");
+    Game.fpsCounter = Crafty.e('2D, Text, DOM').attr({
+            x : 400,
+            y : 20,
+            w : 150,
+            h : 20
+        }).text("Loading..");
 
+    Game.getFps = function() {
+        var previousTimestamp = Game.timeStampOfLastFrame;
+        var newTimestamp = performance.now();
+        
+        var timeBetweenFrames = newTimestamp - previousTimestamp;
+        Game.timeStampOfLastFrame = newTimestamp;
+        return Math.floor(1/(timeBetweenFrames / 1000));
+    }
+        
     Crafty.e('SpawnableBackground').bind('EnterFrame', function () {
         Game.interactionCount.text(Game.numberOfRobotInteraction + " interactions")
         Game.numberOfRobots.text(Game.robots.length + " robots")
+        Game.fpsCounter.text(Game.getFps() + " fps");
         Game.numberOfRobotInteraction = 0;
     });
     this.bind('SpawnRobot', this.spawnRobot);
