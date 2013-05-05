@@ -25,20 +25,23 @@ Crafty.c('Robot', {
     },
 
     handleRobot : function (robot) {
-        var xMovement = 0;
-        var yMovement = 0;
-        var xDifference = robot.x - this.x;
-        var yDifference = robot.y - this.y;
-        if (this.isCloseEnoughToInteract(xDifference, yDifference)) {
-            var robotInteractionResult = this.computeRobotInteraction(robot);
-            xMovement += robotInteractionResult.x;
-            yMovement += robotInteractionResult.y;
+        var robotInteraction;
+        var result = this.computeDistanceDifferences(robot, this);
+        if (this.isCloseEnoughToInteract(result.x, result.y)) {
+            return this.computeRobotInteraction(robot);
         }
 
         return {
-            x : xMovement,
-            y : yMovement
+            x : 0,
+            y : 0
         };
+    },
+
+    computeDistanceDifferences : function (robotOne, robotTwo) {
+        return {
+            x : robotOne.x - robotTwo.x,
+            y : robotOne.y - robotTwo.y
+        }
     },
 
     isCloseEnoughToInteract : function (xDifference, yDifference) {
