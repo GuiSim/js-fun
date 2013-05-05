@@ -22,7 +22,7 @@ Game = {
         return a-b;
     }
 }
-
+console.log('Game on!');
 $text_css = {
     'font-size' : '24px',
     'font-family' : 'Arial',

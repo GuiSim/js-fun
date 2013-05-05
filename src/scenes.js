@@ -6,9 +6,17 @@ Crafty.scene('Test', function () {
     Game.numberOfRobotInteraction = 0;
     Game.timestampOfLastFrame = 0;
 
-    this.spawnRobot = function (position) {
-        var robot = Crafty.e('Robot')
-            .center(position.x, position.y);
+    this.spawnRobot = function (spawnInfo) {
+        if (spawnInfo.spawnType === 0) {
+            var robot = Crafty.e('Robot')
+            .center(spawnInfo.x, spawnInfo.y);
+            Game.robots.push(robot);
+        } else if (spawnInfo.spawnType === 1) {
+            var robot = Crafty.e('RobotCalin')
+            .center(spawnInfo.x, spawnInfo.y);
+            
+        }
+        
         Game.robots.push(robot);
     }
     
