@@ -9,17 +9,17 @@ Crafty.scene('Test', function () {
     this.spawnRobot = function (spawnInfo) {
         if (spawnInfo.spawnType === 0) {
             var robot = Crafty.e('Robot')
-            .center(spawnInfo.x, spawnInfo.y);
+                .center(spawnInfo.x, spawnInfo.y);
             var robotInfluence = Crafty.e('RobotInfluence').forRobot(robot);
             Game.robots.push(robot);
         } else if (spawnInfo.spawnType === 1) {
             var robot = Crafty.e('RobotCalin')
-            .center(spawnInfo.x, spawnInfo.y);
+                .center(spawnInfo.x, spawnInfo.y);
         }
-        
+
         Game.robots.push(robot);
     }
-    
+
     Game.interactionCount = Crafty.e('2D, Text, DOM').attr({
             x : 0,
             y : 0,
@@ -39,15 +39,15 @@ Crafty.scene('Test', function () {
             h : 20
         }).text("Loading..");
 
-    Game.getFps = function() {
+    Game.getFps = function () {
         var previousTimestamp = Game.timeStampOfLastFrame;
         var newTimestamp = performance.now();
-        
+
         var timeBetweenFrames = newTimestamp - previousTimestamp;
         Game.timeStampOfLastFrame = newTimestamp;
-        return Math.floor(1/(timeBetweenFrames / 1000));
+        return Math.floor(1 / (timeBetweenFrames / 1000));
     }
-        
+
     Crafty.e('SpawnableBackground').bind('EnterFrame', function () {
         Game.interactionCount.text(Game.numberOfRobotInteraction + " interactions")
         Game.numberOfRobots.text(Game.robots.length + " robots")
