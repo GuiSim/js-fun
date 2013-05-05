@@ -10,11 +10,11 @@ Crafty.scene('Test', function () {
         if (spawnInfo.spawnType === 0) {
             var robot = Crafty.e('Robot')
             .center(spawnInfo.x, spawnInfo.y);
+            var robotInfluence = Crafty.e('RobotInfluence').forRobot(robot);
             Game.robots.push(robot);
         } else if (spawnInfo.spawnType === 1) {
             var robot = Crafty.e('RobotCalin')
             .center(spawnInfo.x, spawnInfo.y);
-            
         }
         
         Game.robots.push(robot);
