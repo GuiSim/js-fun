@@ -1,10 +1,12 @@
 // Utility methods ----
 
+ROBOT_INFLUENCE = 25;
+
 reactToRobot = function (robotOne, robotTwo) {
-    if (isCloseEnoughToInteract(Game.substract(robotOne._x, robotTwo._x), Game.substract(robotOne._y, robotTwo._y), robotTwo.influenceRange)) {
+    //if (isCloseEnoughToInteract(Game.substract(robotOne._x, robotTwo._x), Game.substract(robotOne._y, robotTwo._y), robotTwo.influenceRange)) {
         return computeRobotInteraction(robotOne, robotTwo);
-    }
-    return null;
+    //}
+    //return null;
 
 }
 
@@ -40,16 +42,16 @@ computePush = function (xDifference, yDifference, influenceRange) {
     var xMovement = 0;
     var yMovement = 0;
     var magnitudeSq = Crafty.math.squaredDistance(0, 0, xDifference, yDifference);
-    if (magnitudeSq <= influenceRange * influenceRange) { // Further than this, we ignore it
+   // if (magnitudeSq <= influenceRange * influenceRange) { // Further than this, we ignore it
         var magnitude = Math.sqrt(magnitudeSq);
         var proximityFactor = 1 / magnitude;
-        var force = -5 * proximityFactor;
+        var force = -20 * proximityFactor;
 
         var vectorDifference = new Crafty.math.Vector2D(xDifference, yDifference)
             vectorDifference.normalize().scale(force);
         xMovement += vectorDifference.x;
         yMovement += vectorDifference.y;
-    }
+   // }
 
     return {
         x : xMovement,
@@ -73,7 +75,7 @@ Crafty.c('Robot', {
             w : 10,
             h : 10,
             z : 2,
-            influenceRange : 50,
+            influenceRange : ROBOT_INFLUENCE,
             robotType : 0
         });
         this.color('blue');
@@ -103,8 +105,8 @@ Crafty.c('RobotInfluence', {
     init : function () {
         this.requires('Position, Collision, Color, Canvas');
         this.attr({
-            w : 100,
-            h : 100,
+            w : ROBOT_INFLUENCE * 2,
+            h : ROBOT_INFLUENCE * 2,
             z: 1,
             associatedRobot : null,
         });
