@@ -35,7 +35,7 @@ computePush = function (xDifference, yDifference) {
     var magnitude = Math.sqrt(magnitudeSq);
     var proximityFactor = 1 / magnitude;
     if (proximityFactor > 1) {
-        proximityFactor = 1; // When they're too close, avoid teleportation 
+        proximityFactor = 1; // Maximum velocity
     }
     var force = -REPULSION_POWER * proximityFactor;
 
@@ -53,9 +53,9 @@ computePush = function (xDifference, yDifference) {
 
 computeRandomPush = function () {
     return {
-        x : Crafty.math.randomNumber(-1, 1),
-        y : yMovement = Crafty.math.randomNumber(-1, 1)
-    }
+        x : Math.round(Crafty.math.randomNumber(-1, 1)),
+        y : Math.round(Crafty.math.randomNumber(-1, 1))
+    };
 }
 
 // Components ------
