@@ -1,20 +1,10 @@
 // Utility methods ----
 
-ROBOT_INFLUENCE = 25;
+ROBOT_SIZE = 16;
+ROBOT_INFLUENCE = 32;
+REPULSION_POWER = 24;
 
 reactToRobot = function (robotOne, robotTwo) {
-    //if (isCloseEnoughToInteract(Game.substract(robotOne._x, robotTwo._x), Game.substract(robotOne._y, robotTwo._y), robotTwo.influenceRange)) {
-    return computeRobotInteraction(robotOne, robotTwo);
-    //}
-    //return null;
-
-}
-
-isCloseEnoughToInteract = function (xDifference, yDifference, influenceRange) {
-    return (Math.abs(xDifference) < influenceRange) && (Math.abs(yDifference) < influenceRange);
-}
-
-computeRobotInteraction = function (robotOne, robotTwo) {
     var xDifference = robotOne._x - robotTwo._x;
     var yDifference = robotOne._y - robotTwo._y;
     Game.numberOfRobotInteraction++;
@@ -26,7 +16,7 @@ computeRobotInteraction = function (robotOne, robotTwo) {
     } else {
         var magnitudeSq = Crafty.math.squaredDistance(0, 0, xDifference, yDifference);
         if (magnitudeSq > 10 || robotOne.robotType === 0) {
-            pushResult = computePush(xDifference, yDifference, robotTwo.influenceRange);
+            pushResult = computePush(xDifference, yDifference);
         } else {
             pushResult = {
                 x : 0,
@@ -38,14 +28,16 @@ computeRobotInteraction = function (robotOne, robotTwo) {
     return [pushResult.x, pushResult.y];
 }
 
-computePush = function (xDifference, yDifference, influenceRange) {
+computePush = function (xDifference, yDifference) {
     var xMovement = 0;
     var yMovement = 0;
     var magnitudeSq = Crafty.math.squaredDistance(0, 0, xDifference, yDifference);
-    // if (magnitudeSq <= influenceRange * influenceRange) { // Further than this, we ignore it
     var magnitude = Math.sqrt(magnitudeSq);
     var proximityFactor = 1 / magnitude;
-    var force = -20 * proximityFactor;
+    if (proximityFactor > 1) {
+        proximityFactor = 1; // When they're too close, avoid teleportation 
+    }
+    var force = -REPULSION_POWER * proximityFactor;
 
     var vectorDifference = new Crafty.math.Vector2D(xDifference, yDifference)
         vectorDifference.normalize().scale(force);
@@ -72,33 +64,14 @@ Crafty.c('Robot', {
     init : function () {
         this.requires('Position, Canvas, Color');
         this.attr({
-            w : 10,
-            h : 10,
+            w : ROBOT_SIZE,
+            h : ROBOT_SIZE,
             z : 2,
             influenceRange : ROBOT_INFLUENCE,
             robotType : 0
         });
         this.color('blue');
-        //this.bind('EnterFrame', this.reactToRobots)
     },
-
-    reactToRobots : function () {
-        var xMovement = 0;
-        var yMovement = 0;
-        for (var i = 0; i < Game.robots.length; i++) {
-            var robot = Game.robots[i];
-            if (robot != this) {
-                var result = reactToRobot(robot, this);
-                if (result) {
-                    xMovement += result[0];
-                    yMovement += result[1];
-                }
-            }
-        }
-
-        this.x += xMovement;
-        this.y += yMovement;
-    }
 });
 
 Crafty.c('RobotInfluence', {
@@ -111,10 +84,6 @@ Crafty.c('RobotInfluence', {
             associatedRobot : null,
         });
         this.color('grey');
-
-        // this.onHit('RobotInfluence', function (otherRobotInfluences) {
-        // this.collidingInfluences = otherRobotInfluences
-        // });
 
         this.bind('EnterFrame', function () {
             var xMovement = 0;
@@ -240,7 +209,7 @@ Crafty.c('SpawnableBackground', {
                 spawnType : 0
             },
             currentCooldown : 0,
-            spawnCooldown : 10
+            spawnCooldown : 5
         });
 
         this.color('white')
@@ -254,7 +223,7 @@ Crafty.c('SpawnableBackground', {
         });
         this.bind('KeyDown', function (e) {
             if (e.key == Crafty.keys['W']) {
-                if (this.spawnCooldown > 5) {
+                if (this.spawnCooldown > 1) {
                     this.spawnCooldown--;
                     console.log("Spawning every: " + this.spawnCooldown);
                 }
